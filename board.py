@@ -162,3 +162,19 @@ class Board:
                 (0,1),
                 (0,-1)
             ])
+    def move(self,piece,move):
+        piece.moved=True
+        initial=move.initial
+        final=move.final
+        initial_row=initial.row
+        initial_col=initial.col
+        final_row=final.row
+        final_col=final.col
+
+        self.squares[initial_row][initial_col].piece= None
+        self.squares[final_row][final_col].piece=piece
+        piece.clear_moves()
+    def is_valid_(self,piece,move):
+        if move in piece.moves:
+            return True
+        return False    
