@@ -10,6 +10,7 @@ class Game:
         self.board= Board()
         self.dragger= Dragger()
         self.piece= self.dragger.piece
+        self.next_player='white'
 
         pass
     def bg(self, bg):
@@ -48,6 +49,15 @@ class Game:
                 # color
                 color = (255,165,0) 
                 # rect
+                rect = (move.final.col * 100, move.final.row * 100, 100, 100)
+                # blit
+                pygame.draw.rect(surface, color, rect)
+    def next_turn(self):
+        if self.next_player=='white':
+            self.next_player='black'
+        else:
+            self.next_player='white'                    
+
                 rect = (move.final.col * 100, move.final.row * 100, 100, 100)
                 # blit
                 pygame.draw.rect(surface, color, rect)
