@@ -3,6 +3,10 @@ class Square:
         self.row=row
         self.col=col
         self.piece=piece
+    def __eq__(self,square2):
+        if self.row==square2.row and self.col==square2.col:
+            return True
+        return False
     def has_piece(self):
         if self.piece!=None:
             return self.piece
@@ -33,6 +37,10 @@ class Square:
             if arg<0 or arg>7:
                 return False
         return True    
+
+
+        
+
 
 
         
