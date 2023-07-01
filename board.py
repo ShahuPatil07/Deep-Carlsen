@@ -29,13 +29,33 @@ class Board:
         self.squares[majorpiece_row][4]= Square(majorpiece_row,4, King(color))
         self.squares[majorpiece_row][5]= Square(majorpiece_row,5, Bishop(color))
         self.squares[majorpiece_row][6]= Square(majorpiece_row,6, Knight(color))
-        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))  
+        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color)) 
+        
         
         
        
 
 
     def possible_moves(self,piece,row,col):
+        def king_moves():
+            all_moves=[
+                (row-1,col),
+                (row-1,col+1),
+                (row-1,col-1),
+                (row+1,col),
+                (row+1,col-1),
+                (row+1,col+1),
+                (row,col-1),
+                (row,col+1)]
+            for moves in all_moves:
+                moved_row,moved_col=moves
+                if Square.on_board(moved_row,moved_row):
+                    if self.squares[moved_row][moved_col].is_empty_or_has_rival_piece(piece.color):
+                       intial= Square(row,col)
+                       final= Square(moved_row,moved_col)
+                       move= Move(intial,final)
+                       piece.add_move(move)
+
         def pawn_moves():
             steps=2
             if piece.moved:
@@ -123,7 +143,7 @@ class Board:
                 (1,-1)
             ])
         if isinstance(piece, King):
-            pass
+            king_moves()
         if isinstance(piece, Queen):
             common_algo_moves([
                 (-1,1),
