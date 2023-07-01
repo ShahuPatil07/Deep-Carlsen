@@ -31,6 +31,7 @@ class Board:
         self.squares[majorpiece_row][6]= Square(majorpiece_row,6, Knight(color))
         self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))  
         
+        
        
 
 
@@ -84,15 +85,60 @@ class Board:
                         fin= Square(crr_row,crr_col)
                         move= Move(ini,fin)
                         piece.add_move(move)
+        def common_algo_moves(incs):
+            for inc in incs:
+                inc_row,inc_col=inc
+                moved_row=row+inc_row
+                moved_col=col+inc_col
+                while True:
+                    
+                    intial= Square(row,col)
+                    final=Square(moved_row,moved_col)
+                    move= Move(intial,final)
+                             
+                    if Square.on_board(moved_row,moved_col):
+                        if self.squares[moved_row][moved_col].is_empty():
+                            piece.add_move(move)
+                            
+                        if self.squares[moved_row][moved_col].has_rival_piece(piece.color):
+                            piece.add_move(move)  
+                            break
+                        if self.squares[moved_row][moved_col].has_team_piece(piece.color):
+                            break
+                    else:
+                        break   
+                    moved_row=moved_row+inc_row
+                    moved_col=moved_col+inc_col
+
+                            
         if isinstance(piece, Pawn):
             pawn_moves()
         if isinstance(piece, Knight):
             knight_moves()
         if isinstance(piece, Bishop):
-            pass
+            common_algo_moves([
+                (-1,1),
+                (-1,-1),
+                (1,1),
+                (1,-1)
+            ])
         if isinstance(piece, King):
             pass
         if isinstance(piece, Queen):
-            pass
+            common_algo_moves([
+                (-1,1),
+                (-1,-1),
+                (1,1),
+                (1,-1),
+                (-1,0),
+                (1,0),
+                (0,1),
+                (0,-1)
+            ])
         if isinstance(piece, Rook):
-            pass
+            common_algo_moves([
+                (-1,0),
+                (1,0),
+                (0,1),
+                (0,-1)
+            ])
