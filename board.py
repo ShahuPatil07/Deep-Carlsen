@@ -29,10 +29,42 @@ class Board:
         self.squares[majorpiece_row][4]= Square(majorpiece_row,4, King(color))
         self.squares[majorpiece_row][5]= Square(majorpiece_row,5, Bishop(color))
         self.squares[majorpiece_row][6]= Square(majorpiece_row,6, Knight(color))
-        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))        
+        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))  
+        self.squares[4][3]= Square(pawn_row, col, Pawn(color))
+       
 
 
     def possible_moves(self,piece,row,col):
+        def pawn_moves():
+            steps=2
+            if piece.moved:
+                steps=1
+            
+            start= row+piece.dir
+            end= row+ piece.dir*(1+steps)
+            for move_row in range(start, end, piece.dir):
+                if Square.on_board(move_row,col):
+                    if self.squares[move_row][col].is_empty():
+                       intial=Square(row,col)
+                       final=Square(move_row,col)
+                       move=Move(intial,final)
+                       piece.add_move(move)
+                    else:
+                       break
+                
+            if Square.on_board(start,col-1):
+                if self.squares[start][col-1].has_rival_piece(piece.color):
+                    intial=Square(row,col)
+                    final=Square(start,col-1)
+                    move=Move(intial,final)
+                    piece.add_move(move)
+            if Square.on_board(start,col+1):
+                if self.squares[start][col+1].has_rival_piece(piece.color):
+                    intial=Square(row,col)
+                    final=Square(start,col+1)
+                    move=Move(intial,final)
+                    piece.add_move(move)        
+
         def knight_moves():
             all_moves=[
                 (row-1,col-2),
@@ -53,18 +85,13 @@ class Board:
                         move= Move(ini,fin)
                         piece.add_move(move)
         if isinstance(piece, Pawn):
-            pass
+            pawn_moves()
         if isinstance(piece, Knight):
             knight_moves()
         if isinstance(piece, Bishop):
             pass
         if isinstance(piece, King):
             pass
-        if isinstance(piece, Queen):
-            pass
-        if isinstance(piece, Rook):
-            pass
-
         if isinstance(piece, Queen):
             pass
         if isinstance(piece, Rook):
