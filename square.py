@@ -1,4 +1,3 @@
-
 class Square:
     def __init__(self,row,col,piece=None):
         self.row=row
@@ -7,23 +6,21 @@ class Square:
     def has_piece(self):
         if self.piece!=None:
             return self.piece
-        else:
-            return None 
+        return None 
     def is_empty(self):
         if self.has_piece():
             return False
-        else:
+        return True
+    def has_team_piece(self, color):
+        if self.has_piece() and self.piece.color == color:
             return True
-    def has_team_piece(self,color):
-        if self.piece.color== color:
+        return False
+    
+
+    def has_rival_piece(self, color):
+        if self.has_piece() and self.piece.color != color:
             return True
-        else:
-            return False
-    def has_rival_piece(self,color):
-        if self.piece.color!= color:
-            return True
-        else:
-            return False
+        return False
     def is_empty_or_has_rival_piece(self,color):
         if self.is_empty() or self.has_rival_piece(color):
             return True
@@ -37,5 +34,7 @@ class Square:
                 return False
         return True    
 
+
+        
 
         
