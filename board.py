@@ -33,15 +33,38 @@ class Board:
 
 
     def possible_moves(self,piece,row,col):
-        pass
+        def knight_moves():
+            all_moves=[
+                (row-1,col-2),
+                (row-1,col+2),
+                (row-2,col+1),
+                (row-2,col-1),
+                (row+1,col+2),
+                (row+1,col-2),
+                (row+2,col+1),
+                (row+2,col-1)
+            ]
+            for move in all_moves:
+                crr_row,crr_col=move
+                if Square.on_board(crr_row,crr_col):
+                    if self.squares[crr_row][crr_col].is_empty_or_has_rival_piece(piece.color):
+                        ini= Square(row,col)
+                        fin= Square(crr_row,crr_col)
+                        move= Move(ini,fin)
+                        piece.add_move(move)
         if isinstance(piece, Pawn):
             pass
         if isinstance(piece, Knight):
-            pass
+            knight_moves()
         if isinstance(piece, Bishop):
             pass
         if isinstance(piece, King):
             pass
+        if isinstance(piece, Queen):
+            pass
+        if isinstance(piece, Rook):
+            pass
+
         if isinstance(piece, Queen):
             pass
         if isinstance(piece, Rook):
