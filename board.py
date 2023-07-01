@@ -30,7 +30,7 @@ class Board:
         self.squares[majorpiece_row][5]= Square(majorpiece_row,5, Bishop(color))
         self.squares[majorpiece_row][6]= Square(majorpiece_row,6, Knight(color))
         self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))  
-        self.squares[4][3]= Square(pawn_row, col, Pawn(color))
+        
        
 
 
