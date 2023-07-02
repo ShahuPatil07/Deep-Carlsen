@@ -9,6 +9,8 @@ class Board:
         self.create()
         self.put_peices("white")
         self.put_peices("black")
+        self.move_is_castle=False
+        
     def create(self):
         for row in range(ROW):
             for col in range(COL):
@@ -29,7 +31,11 @@ class Board:
         self.squares[majorpiece_row][4]= Square(majorpiece_row,4, King(color))
         self.squares[majorpiece_row][5]= Square(majorpiece_row,5, Bishop(color))
         self.squares[majorpiece_row][6]= Square(majorpiece_row,6, Knight(color))
-        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color)) 
+        self.squares[majorpiece_row][7]= Square(majorpiece_row,7, Rook(color))
+    def check_promotion(self,piece,final):
+        if final.row==0 or final.row==7:
+            self.squares[final.row][final.col].piece=Queen(piece.color)    
+    
         
         
         
@@ -55,6 +61,69 @@ class Board:
                        final= Square(moved_row,moved_col)
                        move= Move(intial,final)
                        piece.add_move(move)
+           ##short castle
+            if not piece.moved:
+                if piece.color=='white':
+                    if self.squares[7][5].is_empty() and self.squares[7][6].is_empty(): 
+                        if  self.squares[7][7].has_piece():
+                           if not self.squares[7][7].piece.moved:
+                               intial= Square(7,4)
+                               final= Square(7,6)
+                               move= Move(intial,final)
+                               piece.add_move(move)
+                               ini= Square(7,7)
+                               fin= Square(7,5)
+                               move2= Move(ini,fin)
+                               self.squares[7][7].piece.add_move(move2)
+                if piece.color=='black':
+                    if self.squares[0][5].is_empty() and self.squares[0][6].is_empty(): 
+                        if  self.squares[0][7].has_piece():
+                           if not self.squares[0][7].piece.moved:
+                               intial= Square(0,4)
+                               final= Square(0,6)
+                               move= Move(intial,final)
+                               piece.add_move(move)
+                               ini= Square(0,7)
+                               fin= Square(0,5)
+                               move2= Move(ini,fin)
+                               self.squares[0][7].piece.add_move(move2)                               
+                           
+                 
+            ##long castle:
+            if not piece.moved:
+                if piece.color=='white':
+                    if self.squares[7][3].is_empty() and self.squares[7][2].is_empty():
+                        if self.squares[7][1].is_empty(): 
+                            if self.squares[7][0].has_piece():
+                               if not self.squares[7][0].piece.moved:
+                                  intial= Square(7,4)
+                                  final= Square(7,2)
+                                  move= Move(intial,final)
+                                  piece.add_move(move)
+                                  ini= Square(7,0)
+                                  fin= Square(7,3)
+                                  move2= Move(ini,fin)
+                                  self.squares[7][0].piece.add_move(move2)
+                        
+                if piece.color=='black':
+                    if self.squares[0][3].is_empty() and self.squares[0][2].is_empty():
+                        if self.squares[0][1].is_empty():
+                            if self.squares[0][0].has_piece(): 
+                               if not self.squares[0][0].piece.moved:
+                                  intial= Square(0,4)
+                                  final= Square(0,2)
+                                  move= Move(intial,final)
+                                  piece.add_move(move)
+                                  ini= Square(0,0)
+                                  fin= Square(0,3)
+                                  move2= Move(ini,fin)
+                                  self.squares[0][0].piece.add_move(move2)              
+
+
+                          
+
+            
+
 
         def pawn_moves():
             steps=2
@@ -120,8 +189,10 @@ class Board:
                         if self.squares[moved_row][moved_col].is_empty():
                             piece.add_move(move)
                             
+                            
                         if self.squares[moved_row][moved_col].has_rival_piece(piece.color):
                             piece.add_move(move)  
+                            
                             break
                         if self.squares[moved_row][moved_col].has_team_piece(piece.color):
                             break
@@ -174,6 +245,35 @@ class Board:
         self.squares[initial_row][initial_col].piece= None
         self.squares[final_row][final_col].piece=piece
         piece.clear_moves()
+        if isinstance(piece,King):
+            if final.col-initial.col>1:
+                if piece.color=='white':
+                    if final.col==6:
+                       
+                       self.squares[7][5].piece=self.squares[7][7].piece
+                       self.squares[7][7].piece=None
+                       self.squares[7][5].piece.clear_moves()
+                    if final.col==2:
+                       
+                       self.squares[7][3].piece=self.squares[7][0].piece 
+                       self.squares[7][0].piece=None
+                       self.squares[7][3].piece.clear_moves()
+                if piece.color=='black':
+                    if final.col==6:
+                       
+                       self.squares[0][5].piece=self.squares[0][7].piece
+                       self.squares[0][7].piece=None
+                       self.squares[0][5].piece.clear_moves()
+                    if final.col==2:
+                       
+                       self.squares[0][3].piece=self.squares[0][0].piece
+                       self.squares[0][0].piece=None
+                       self.squares[0][3].piece.clear_moves()          
+    
+        
+
+        if isinstance(piece,Pawn):
+            self.check_promotion(piece,final)
     def is_valid_(self,piece,move):
         if move in piece.moves:
             return True
