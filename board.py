@@ -246,7 +246,7 @@ class Board:
         self.squares[final_row][final_col].piece=piece
         piece.clear_moves()
         if isinstance(piece,King):
-            if final.col-initial.col>1:
+            if final.col-initial.col>1 or initial_col-final.col>1:
                 if piece.color=='white':
                     if final.col==6:
                        
