@@ -11,7 +11,7 @@ class Main:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT) )
-        pygame.display.set_caption('Chess')
+        pygame.display.set_caption("Shahu's Chess")
         self.game = Game()
 
     def mainloop(self):
@@ -86,18 +86,22 @@ class Main:
 
                         released_row = dragger.mouse_y // SQSIZE
                         released_col = dragger.mouse_x // SQSIZE
-
+                        if released_row==dragger.initial_row and released_col==dragger.initial_col:
+                            dragger.piece.clear_moves()
                         # create possible move
-                        initial = Square(dragger.initial_row, dragger.initial_col)
-                        final = Square(released_row, released_col)
-                        move = Move(initial, final)
+                        else:
+                            initial = Square(dragger.initial_row, dragger.initial_col)
+                            final = Square(released_row, released_col)
+                            move = Move(initial, final)
 
                         # valid move ?
-                        if board.is_valid_(dragger.piece,move):
-                            board.move(dragger.piece,move)
-                            self.game.bg(self.screen)
-                            self.game.add_pieces(self.screen)
-                            self.game.next_turn()
+                            if board.is_valid_(dragger.piece,move):
+                            
+                               board.move(dragger.piece,move)
+                               dragger.piece.clear_moves()
+                               self.game.bg(self.screen)
+                               self.game.add_pieces(self.screen)
+                               self.game.next_turn()
             
 
                        
