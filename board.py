@@ -83,7 +83,11 @@ class Board:
                        intial= Square(row,col)
                        final= Square(moved_row,moved_col)
                        move= Move(intial,final)
-                       piece.add_move(move)
+                       if bool:
+                           if not self.in_check(piece,move):
+                              piece.add_move(move)
+                       else:
+                           piece.add_move(move)
            ##short castle
             if not piece.moved:
                 if piece.color=='white':
@@ -93,11 +97,20 @@ class Board:
                                intial= Square(7,4)
                                final= Square(7,6)
                                move= Move(intial,final)
-                               piece.add_move(move)
+                               if bool:
+                                  if not self.in_check(piece,move):
+                                            piece.add_move(move)
+                               else:
+                                        piece.add_move(move)
                                ini= Square(7,7)
                                fin= Square(7,5)
                                move2= Move(ini,fin)
-                               self.squares[7][7].piece.add_move(move2)
+                               if bool:
+                                   if not self.in_check(piece,move):
+                                      self.squares[7][7].piece.add_move(move2)
+                               else:
+                                   self.squares[7][7].piece.add_move(move2)
+                                          
                 if piece.color=='black':
                     if self.squares[0][5].is_empty() and self.squares[0][6].is_empty(): 
                         if  self.squares[0][7].has_piece():
@@ -105,11 +118,19 @@ class Board:
                                intial= Square(0,4)
                                final= Square(0,6)
                                move= Move(intial,final)
-                               piece.add_move(move)
+                               if bool:
+                                   if not self.in_check(piece,move):
+                                       piece.add_move(move)
+                               else:
+                                   piece.add_move(move)        
                                ini= Square(0,7)
                                fin= Square(0,5)
                                move2= Move(ini,fin)
-                               self.squares[0][7].piece.add_move(move2)                               
+                               if bool:
+                                   if not self.in_check(piece,move):
+                                      self.squares[0][7].piece.add_move(move2)
+                               else:
+                                   self.squares[0][7].piece.add_move(move2)                               
                            
                  
             ##long castle:
@@ -122,12 +143,20 @@ class Board:
                                   intial= Square(7,4)
                                   final= Square(7,2)
                                   move= Move(intial,final)
-                                  piece.add_move(move)
+                                  if bool:
+                                     if not self.in_check(piece,move):
+                                         piece.add_move(move)
+                                  else:
+                                      piece.add_move(move)
                                   ini= Square(7,0)
                                   fin= Square(7,3)
                                   move2= Move(ini,fin)
-                                  self.squares[7][0].piece.add_move(move2)
-                        
+                                  if bool:
+                                      if not self.in_check(piece,move):
+                                          self.squares[7][0].piece.add_move(move2)
+                                  else:
+                                      self.squares[7][0].piece.add_move(move2)
+                                      
                 if piece.color=='black':
                     if self.squares[0][3].is_empty() and self.squares[0][2].is_empty():
                         if self.squares[0][1].is_empty():
@@ -140,7 +169,13 @@ class Board:
                                   ini= Square(0,0)
                                   fin= Square(0,3)
                                   move2= Move(ini,fin)
-                                  self.squares[0][0].piece.add_move(move2)              
+                                  if bool:
+                                      if not self.in_check(piece,move):
+                                          self.squares[0][0].piece.add_move(move2)
+                                  else:
+                                      self.squares[0][0].piece.add_move(move2)
+                                      
+                                                
 
 
                           
