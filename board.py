@@ -2,6 +2,7 @@ from const import *
 from square import Square
 from piece import *
 from move import Move
+import copy
 
 class Board:
     def __init__(self):
@@ -35,14 +36,36 @@ class Board:
     def check_promotion(self,piece,final):
         if final.row==0 or final.row==7:
             self.squares[final.row][final.col].piece=Queen(piece.color)    
+    def in_check(self, piece, move):
+        in_check = False
+        test_piece = copy.deepcopy(piece)
+        test_board = copy.deepcopy(self)
+        test_board.move(test_piece, move)
+        for row in range(ROW):
+            for col in range(COL):
+                if test_board.squares[row][col].has_rival_piece(test_piece.color):
+                    piece2 = test_board.squares[row][col].piece
+                    test_board.possible_moves(piece2, row, col, bool=False)
+                    for move2 in piece2.moves:
+                        if isinstance(move2.final.piece, King):
+                            in_check = True
+                            break
+                if in_check:
+                    break
+            if in_check:
+                break
+
+        return in_check
     
+
+
         
         
         
        
 
 
-    def possible_moves(self,piece,row,col):
+    def possible_moves(self,piece,row,col,bool=True):
         def king_moves():
             all_moves=[
                 (row-1,col),
@@ -138,22 +161,39 @@ class Board:
                        intial=Square(row,col)
                        final=Square(move_row,col)
                        move=Move(intial,final)
-                       piece.add_move(move)
+                       if bool:
+                           if not self.in_check(piece,move):
+                              piece.add_move(move)
+                       else:
+                           piece.add_move(move) 
+                                 
                     else:
                        break
-                
+                else:
+                    break
+
             if Square.on_board(start,col-1):
                 if self.squares[start][col-1].has_rival_piece(piece.color):
                     intial=Square(row,col)
-                    final=Square(start,col-1)
+                    final_piece=self.squares[start][col-1].piece
+                    final=Square(start,col-1,final_piece)
                     move=Move(intial,final)
-                    piece.add_move(move)
+                    if bool:
+                           if not self.in_check(piece,move):
+                              piece.add_move(move)
+                    else:
+                           piece.add_move(move) 
             if Square.on_board(start,col+1):
                 if self.squares[start][col+1].has_rival_piece(piece.color):
                     intial=Square(row,col)
-                    final=Square(start,col+1)
+                    final_piece=self.squares[start][col+1].piece
+                    final=Square(start,col+1,final_piece)
                     move=Move(intial,final)
-                    piece.add_move(move)        
+                    if bool:
+                           if not self.in_check(piece,move):
+                              piece.add_move(move)
+                    else:
+                           piece.add_move(move)        
 
         def knight_moves():
             all_moves=[
@@ -171,9 +211,15 @@ class Board:
                 if Square.on_board(crr_row,crr_col):
                     if self.squares[crr_row][crr_col].is_empty_or_has_rival_piece(piece.color):
                         ini= Square(row,col)
-                        fin= Square(crr_row,crr_col)
+                        final_piece=self.squares[crr_row][crr_col].piece
+                        fin= Square(crr_row,crr_col,final_piece)
                         move= Move(ini,fin)
-                        piece.add_move(move)
+                        if bool:
+                           if not self.in_check(piece,move):
+                              piece.add_move(move)
+                        else:
+                           piece.add_move(move)
+                           break
         def common_algo_moves(incs):
             for inc in incs:
                 inc_row,inc_col=inc
@@ -181,20 +227,35 @@ class Board:
                 moved_col=col+inc_col
                 while True:
                     
-                    intial= Square(row,col)
-                    final=Square(moved_row,moved_col)
-                    move= Move(intial,final)
+                    
+                    
                              
                     if Square.on_board(moved_row,moved_col):
                         if self.squares[moved_row][moved_col].is_empty():
-                            piece.add_move(move)
+                            intial= Square(row,col)
+                            final_piece=self.squares[moved_row][moved_col].piece
+                            final=Square(moved_row,moved_col,final_piece)
+                            move= Move(intial,final)
+                            if bool:
+                                if not self.in_check(piece,move):
+                                     piece.add_move(move)
+                            else:
+                                 piece.add_move(move)
                             
                             
-                        if self.squares[moved_row][moved_col].has_rival_piece(piece.color):
-                            piece.add_move(move)  
+                        elif self.squares[moved_row][moved_col].has_rival_piece(piece.color):
+                            intial= Square(row,col)
+                            final_piece=self.squares[moved_row][moved_col].piece
+                            final=Square(moved_row,moved_col,final_piece)
+                            move= Move(intial,final)
+                            if bool:
+                                if not self.in_check(piece,move):
+                                    piece.add_move(move)
+                            else:
+                                 piece.add_move(move) 
                             
                             break
-                        if self.squares[moved_row][moved_col].has_team_piece(piece.color):
+                        elif self.squares[moved_row][moved_col].has_team_piece(piece.color):
                             break
                     else:
                         break   
