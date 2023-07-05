@@ -43,7 +43,7 @@ class Main:
                         if board.squares[clicked_row][clicked_col].has_piece():
                             piece = board.squares[clicked_row][clicked_col].piece
                             if game.next_player==piece.color:
-                                board.possible_moves(piece, clicked_row, clicked_col)
+                                board.possible_moves(piece, clicked_row, clicked_col,bool=True)
                                 dragger.save_initial_pos(event.pos)
                                 dragger.drag_piece(piece)
                             # show methods 
@@ -91,17 +91,19 @@ class Main:
                         # create possible move
                         else:
                             initial = Square(dragger.initial_row, dragger.initial_col)
+                           
                             final = Square(released_row, released_col)
                             move = Move(initial, final)
 
                         # valid move ?
                             if board.is_valid_(dragger.piece,move):
+                               
                             
-                               board.move(dragger.piece,move)
-                               dragger.piece.clear_moves()
-                               self.game.bg(self.screen)
-                               self.game.add_pieces(self.screen)
-                               self.game.next_turn()
+                                  board.move(dragger.piece,move)
+                                  dragger.piece.clear_moves()
+                                  self.game.bg(self.screen)
+                                  self.game.add_pieces(self.screen)
+                                  self.game.next_turn()
             
 
                        
@@ -121,3 +123,4 @@ class Main:
 
 main = Main()
 main.mainloop()
+
