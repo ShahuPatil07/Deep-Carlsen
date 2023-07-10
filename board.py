@@ -78,7 +78,7 @@ class Board:
                 (row,col+1)]
             for moves in all_moves:
                 moved_row,moved_col=moves
-                if Square.on_board(moved_row,moved_row):
+                if Square.on_board(moved_row,moved_col):
                     if self.squares[moved_row][moved_col].is_empty_or_has_rival_piece(piece.color):
                        intial= Square(row,col)
                        final= Square(moved_row,moved_col)
