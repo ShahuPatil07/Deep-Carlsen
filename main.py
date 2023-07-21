@@ -1,5 +1,7 @@
 import pygame
 import sys
+import chess
+import chess.engine
 
 from const import *
 from backg import Game
@@ -104,6 +106,19 @@ class Main:
                                   self.game.bg(self.screen)
                                   self.game.add_pieces(self.screen)
                                   self.game.next_turn()
+                                  board.active_color= self.game.next_player
+                                  
+                                 
+                                  fen_position= board.board_to_fen()
+                                  
+                                  with chess.engine.SimpleEngine.popen_uci(r"C:\Users\shau\OneDrive\Desktop\stockfish\stockfish-windows-x86-64-avx2") as sf:
+                                     board_score_after = sf.analyse(board= chess.Board(fen_position), limit=chess.engine.Limit(depth=1))\
+                                     ['score'].relative.score(mate_score=10000)
+                                     if (board.active_color== 'white'):
+                                        print("Evaluation Score:", (board_score_after/100))
+                                     else:
+                                        print("Evaluation Score:", 0.0-(board_score_after/100))    
+
             
 
                        
