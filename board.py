@@ -4,6 +4,7 @@ from piece import *
 from move import Move
 import copy
 
+
 class Board:
     def __init__(self):
         self.squares= [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COL)]
@@ -11,7 +12,13 @@ class Board:
         self.put_peices("white")
         self.put_peices("black")
         self.move_is_castle=False
-        
+        self.active_color= 'white'
+        self.halfmove_clock=0
+        self.fullmove_number=0
+        self.white_00_valid= True
+        self.white_000_valid= True
+        self.black_00_valid= True
+        self.black_000_valid= True
     def create(self):
         for row in range(ROW):
             for col in range(COL):
@@ -110,6 +117,8 @@ class Board:
                                       self.squares[7][7].piece.add_move(move2)
                                else:
                                    self.squares[7][7].piece.add_move(move2)
+                               self.white_00_valid= False    
+                               self.white_000_valid= False
                                           
                 if piece.color=='black':
                     if self.squares[0][5].is_empty() and self.squares[0][6].is_empty(): 
@@ -130,8 +139,9 @@ class Board:
                                    if not self.in_check(piece,move):
                                       self.squares[0][7].piece.add_move(move2)
                                else:
-                                   self.squares[0][7].piece.add_move(move2)                               
-                           
+                                   self.squares[0][7].piece.add_move(move2)      
+                               self.black_00_valid= False                             
+                               self.black_000_valid= False
                  
             ##long castle:
             if not piece.moved:
@@ -156,7 +166,10 @@ class Board:
                                           self.squares[7][0].piece.add_move(move2)
                                   else:
                                       self.squares[7][0].piece.add_move(move2)
-                                      
+                                  self.white_000_valid= False
+                                  self.white_00_valid= False
+
+                        
                 if piece.color=='black':
                     if self.squares[0][3].is_empty() and self.squares[0][2].is_empty():
                         if self.squares[0][1].is_empty():
@@ -174,8 +187,8 @@ class Board:
                                           self.squares[0][0].piece.add_move(move2)
                                   else:
                                       self.squares[0][0].piece.add_move(move2)
-                                      
-                                                
+                                  self.black_000_valid= False    
+                                  self.black_00_valid= False              
 
 
                           
@@ -254,7 +267,7 @@ class Board:
                               piece.add_move(move)
                         else:
                            piece.add_move(move)
-                           break
+                           
         def common_algo_moves(incs):
             for inc in incs:
                 inc_row,inc_col=inc
@@ -370,7 +383,56 @@ class Board:
 
         if isinstance(piece,Pawn):
             self.check_promotion(piece,final)
+        
+        
+        if isinstance(piece, Pawn) or final.has_piece():
+            self.halfmove_clock = 0
+        else:
+            self.halfmove_clock += 1
+
+        # Update the fullmove number
+        if piece.color != 'white':
+            self.fullmove_number += 1    
+    
+    
     def is_valid_(self,piece,move):
         if move in piece.moves:
             return True
-        return False    
+        return False 
+    def board_to_fen(self):
+        fen = ''
+        empty_count = 0
+
+    # Iterate through the rows from the top (8th) to the bottom (1st).
+        for row in range(8):
+            for col in range(8):
+               square = self.squares[row][col]
+               if square.is_empty():
+                   empty_count += 1
+               else:
+                    if empty_count > 0:
+                        fen += str(empty_count)
+                        empty_count = 0
+                    fen += square.piece.fen_symbol()
+
+            if empty_count > 0:
+                fen += str(empty_count)
+                empty_count = 0
+
+            if row <7 :
+                fen += '/'
+
+        fen += ' ' + ('w' if self.active_color== 'white' else 'b')  # Side to move ('w' for white, 'b' for black)
+        fen+=' '
+        fen+='K' if self.white_00_valid else ''
+        fen+='Q' if self.white_000_valid else ''
+        fen+='k' if self.black_00_valid else ''
+        fen+='q' if self.black_000_valid else ''
+        if (not self.white_00_valid) and (not self.black_00_valid):
+            fen+= '-' 
+        fen += ' -'  # En passant target square (not included)
+        fen += ' '+str(self.halfmove_clock)  # Halfmove clock (not included)
+        fen += ' '+str(self.fullmove_number)  # Fullmove number (not included)
+
+        return fen   
+    
