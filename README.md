@@ -1,2 +1,2 @@
 # Deep-Carlsen
-### Currently a normal player vs player engine is built... and AI part is under progress...
+### Documentation will get updated soon..
