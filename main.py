@@ -2,19 +2,18 @@ import pygame
 import sys
 import chess
 import chess.engine
-
-from const import *
 from backg import Game
-from square import Square
-from move import Move
-from stockfish_play import Stockfish_play
+from square import *
+from board import *
+
+
 
 
 class Main:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode( (WIDTH, HEIGHT) )
+        self.screen = pygame.display.set_mode( (800, 800) )
         pygame.display.set_caption("Shahu's Chess")
         self.game = Game()
 
@@ -24,7 +23,7 @@ class Main:
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
-        stock= Stockfish_play()
+        stock= board
         
 
         while True:
@@ -44,8 +43,8 @@ class Main:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                         dragger.update_pos(event.pos)
                    
-                        clicked_row = dragger.mouse_y // SQSIZE
-                        clicked_col = dragger.mouse_x // SQSIZE
+                        clicked_row = dragger.mouse_y // 100
+                        clicked_col = dragger.mouse_x // 100
                         if board.squares[clicked_row][clicked_col].has_piece():
                             piece = board.squares[clicked_row][clicked_col].piece
                             if game.next_player==piece.color:
@@ -69,8 +68,8 @@ class Main:
                 
                 # mouse motion
                 elif event.type == pygame.MOUSEMOTION:
-                    motion_row = event.pos[1] // SQSIZE
-                    motion_col = event.pos[0] // SQSIZE
+                    motion_row = event.pos[1] // 100
+                    motion_col = event.pos[0] // 100
 
                     
 
@@ -90,8 +89,8 @@ class Main:
                     if dragger.dragging:
                         dragger.update_pos(event.pos)
 
-                        released_row = dragger.mouse_y // SQSIZE
-                        released_col = dragger.mouse_x // SQSIZE
+                        released_row = dragger.mouse_y // 100
+                        released_col = dragger.mouse_x // 100
                         if released_row==dragger.initial_row and released_col==dragger.initial_col:
                             dragger.piece.clear_moves()
                         # create possible move
