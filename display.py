@@ -29,7 +29,7 @@ class Game:
                 if self.board.squares[row][col].has_piece():
                     piece = self.board.squares[row][col].piece
                     
-                    # all pieces except dragger piece
+                  
                     if piece is not self.dragger.piece:
                         piece.set_texture(size=80)
                         img = pygame.image.load(piece.texture)
@@ -45,14 +45,14 @@ class Game:
 
             # loop all valid moves
             for move in piece.moves:
-                # color
+                
                 if (move.final.row+move.final.col)%2==1:
                     color = (255,165,0)
                 else:
                     color= (200,100,0)     
-                # rect
+               
                 rect = (move.final.col * 100, move.final.row * 100, 100, 100)
-                # blit
+                
                 pygame.draw.rect(surface, color, rect)
     def next_turn(self):
         if self.next_player=='white':
