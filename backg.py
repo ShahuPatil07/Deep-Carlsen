@@ -1,8 +1,7 @@
 import pygame
-from const import *
 from board import Board
-from square import Square
-from Drag import Dragger
+from square import *
+
 
 
 class Game:
@@ -14,8 +13,8 @@ class Game:
 
         pass
     def bg(self, bg):
-        for row in range(ROW):
-            for col in range(COL):
+        for row in range(8):
+            for col in range(8):
                 if (row+col)%2==0:
                     color= (102, 51, 153)
                 else:
@@ -24,8 +23,8 @@ class Game:
                 pygame.draw.rect(bg, color, rect)
 
     def add_pieces(self, surface):
-        for row in range(COL):
-            for col in range(COL):
+        for row in range(8):
+            for col in range(8):
                 # piece ?
                 if self.board.squares[row][col].has_piece():
                     piece = self.board.squares[row][col].piece
@@ -34,7 +33,7 @@ class Game:
                     if piece is not self.dragger.piece:
                         piece.set_texture(size=80)
                         img = pygame.image.load(piece.texture)
-                        img_center = col * SQSIZE + SQSIZE // 2, row * SQSIZE + SQSIZE // 2
+                        img_center = col * 100 + 100 // 2, row * 100 + 100 // 2
                         piece.texture_rect = img.get_rect(center=img_center)
                         surface.blit(img, piece.texture_rect)
 
@@ -47,7 +46,10 @@ class Game:
             # loop all valid moves
             for move in piece.moves:
                 # color
-                color = (255,165,0) 
+                if (move.final.row+move.final.col)%2==1:
+                    color = (255,165,0)
+                else:
+                    color= (200,100,0)     
                 # rect
                 rect = (move.final.col * 100, move.final.row * 100, 100, 100)
                 # blit
@@ -57,8 +59,3 @@ class Game:
             self.next_player='black'
         else:
             self.next_player='white'                    
-
-                rect = (move.final.col * 100, move.final.row * 100, 100, 100)
-                # blit
-                pygame.draw.rect(surface, color, rect)
-
