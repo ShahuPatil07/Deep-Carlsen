@@ -128,7 +128,7 @@ class Main:
                                             
                                  
                                  
-                                  #comment out line 133 to line 146 to play player vs player game      
+                                  #comment out line 132 to line 145 to play player vs player game      
                                   if self.game.next_player!= 'white':
                                       move= stock.best_move(board)
                                       board.move(stock.piece0,move)
