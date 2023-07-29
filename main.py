@@ -27,7 +27,7 @@ class Main:
         
 
         while True:
-            # show methods
+           
             game.bg(screen)
             
             game.show_moves(screen)
@@ -39,7 +39,7 @@ class Main:
 
             for event in pygame.event.get():
 
-                # click
+               
                 if event.type == pygame.MOUSEBUTTONDOWN:
                         dragger.update_pos(event.pos)
                    
@@ -65,8 +65,7 @@ class Main:
 
 
                     
-                
-                # mouse motion
+               
                 elif event.type == pygame.MOUSEMOTION:
                     motion_row = event.pos[1] // 100
                     motion_col = event.pos[0] // 100
@@ -83,7 +82,7 @@ class Main:
                     
                         dragger.update_blit(screen)
                 
-                # click release
+                
                 elif event.type == pygame.MOUSEBUTTONUP:
                     
                     if dragger.dragging:
@@ -100,7 +99,7 @@ class Main:
                             final = Square(released_row, released_col)
                             move = Move(initial, final)
 
-                        # valid move ?
+                       
                             if board.is_valid_(dragger.piece,move):
                                
                             
@@ -158,11 +157,7 @@ class Main:
                        
                     
                     dragger.undrag_piece()
-                
-                # key press
-                
-
-                # quit application
+              
                 elif event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
