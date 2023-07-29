@@ -1,13 +1,15 @@
-from const import *
-from square import Square
-from piece import *
-from move import Move
+
+from square import *
+
+import copy
+import chess
+import chess.engine
 import copy
 
 
 class Board:
     def __init__(self):
-        self.squares= [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(COL)]
+        self.squares= [[0, 0, 0, 0, 0, 0, 0, 0] for col in range(8)]
         self.create()
         self.put_peices("white")
         self.put_peices("black")
@@ -19,9 +21,10 @@ class Board:
         self.white_000_valid= True
         self.black_00_valid= True
         self.black_000_valid= True
+        self.best_piece= None
     def create(self):
-        for row in range(ROW):
-            for col in range(COL):
+        for row in range(8):
+            for col in range(8):
                 self.squares[row][col]= Square(row,col)
                 
     def put_peices(self, color):
@@ -29,7 +32,7 @@ class Board:
         if color=='white': 
             pawn_row, majorpiece_row= 6,7
         
-        for col in range(COL):
+        for col in range(8):
             self.squares[pawn_row][col]= Square(pawn_row, col, Pawn(color))
 
         self.squares[majorpiece_row][0]= Square(majorpiece_row,0, Rook(color))
@@ -48,8 +51,8 @@ class Board:
         test_piece = copy.deepcopy(piece)
         test_board = copy.deepcopy(self)
         test_board.move(test_piece, move)
-        for row in range(ROW):
-            for col in range(COL):
+        for row in range(8):
+            for col in range(8):
                 if test_board.squares[row][col].has_rival_piece(test_piece.color):
                     piece2 = test_board.squares[row][col].piece
                     test_board.possible_moves(piece2, row, col, bool=False)
@@ -435,4 +438,37 @@ class Board:
         fen += ' '+str(self.fullmove_number)  # Fullmove number (not included)
 
         return fen   
-    
+
+
+
+             
+    def best_move(self,board):
+       
+       
+       max_eval=1000.0
+       for row in range(8):
+           for col in range(8):
+               if board.squares[row][col].has_team_piece('black'):
+                   test_piece= copy.deepcopy(board.squares[row][col].piece)
+                   test_board= copy.deepcopy(board)
+
+                   test_board.possible_moves(test_piece,row,col)
+                   for m in test_piece.moves:
+                       test_board= copy.deepcopy(board)
+                       test_board.move(test_piece,m)
+                       test_board.active_color= 'white'
+                       fen_position= test_board.board_to_fen()
+                       
+                       with chess.engine.SimpleEngine.popen_uci(r"C:\Users\shau\OneDrive\Desktop\stockfish\stockfish-windows-x86-64-avx2") as sf:
+                                     crr_eval = sf.analyse(board= chess.Board(fen_position), limit=chess.engine.Limit(depth=1))\
+                                     ['score'].relative.score(mate_score=10000)
+                                     crr_eval=crr_eval/100
+                                     if crr_eval<max_eval:
+                                                max_eval= crr_eval
+                                                best_move= m
+                                                best_piece= test_piece
+                   test_piece.clear_moves()                             
+       self.piece0= best_piece   
+       return best_move  
+    def best_piece(self):
+          return self.piece0                                   
