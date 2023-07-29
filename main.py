@@ -2,7 +2,7 @@ import pygame
 import sys
 import chess
 import chess.engine
-from backg import Game
+from display import Game
 from square import *
 from board import *
 
