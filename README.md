@@ -10,10 +10,10 @@ Initially, I developed entire chess game using Pygame library. That itself inclu
 * For getting correct evaluation of my position, I needed to convert my Pygame engine to FEN format which is accepted by stockfish. For this I made a function board_to_fen in board.py which returns the string format of current position which is further used by stockfish to evaluate the same.
 * To get the best move i made a function best_move in stockfish_play.py where the reward function is (evaluation after move played - evaluation before the move). This way I eterated through all moves again using copy of curent board and returned the best move.
 ### Now let's talk about what every does:
-* main.py- Its the operational file from where we run our game.
-* display.py- It is responsible for all what is displayed on the screen.(showing pieces, showing board, showing moves on a piece touched)
-* board.py- probably the most important. All the chess rules are stored here, backend of what happens when a move is excecuted, also conversion of my chess board to FEN string is done here and also finding the best move.
-* square.py- Defines contents of a square, contents of a move, defines all pieces and is the backend for dragging functionallity in our game.
+* [main.py](https://github.com/ShahuPatil07/Deep-Carlsen/blob/Files/main.py)- Its the operational file from where we run our game.
+* [display.py](https://github.com/ShahuPatil07/Deep-Carlsen/blob/Files/display.py)- It is responsible for all what is displayed on the screen.(showing pieces, showing board, showing moves on a piece touched)
+* [board.py](https://github.com/ShahuPatil07/Deep-Carlsen/blob/Files/board.py)- probably the most important. All the chess rules are stored here, backend of what happens when a move is excecuted, also conversion of my chess board to FEN string is done here and also finding the best move.
+* [square.py](https://github.com/ShahuPatil07/Deep-Carlsen/blob/Files/square.py)- Defines contents of a square, contents of a move, defines all pieces and is the backend for dragging functionallity in our game.
   ### Results:
 * Talking about openings played:
 Against E4 it plays lines similar to the Italian game (at depth= 1) and plays Caro Kann defence (at depth= 10). Against D4, it plays lines similar to Nimzo Indian defence (at depth= 1) and plays D5 lines(at depth= 10).
