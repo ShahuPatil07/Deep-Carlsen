@@ -11,12 +11,12 @@ Initially, I developed entire chess game using Pygame library. That itself inclu
 * To get the best move i made a function best_move in stockfish_play.py where the reward function is (evaluation after move played - evaluation before the move). This way I eterated through all moves again using copy of curent board and returned the best move.
 ### Now let's talk about what every does:
 * main.py- Its the operational file from where we run our game.
-* backg.py- It is responsible for all what is displayed on the scree.
-* board.py- probably the most important. All the chess rules are stored here, backend of what happens when a move is excecuted, also conversion of my chess board to FEN string is done here and a lot more.
-* square.py- Used to determine what a particular square consists of (team piece, enenmy piece, empty etc)
-* stockfish_play.py- Used for engine to predict the best move.
-* piece.py- consists of all properties of a piece.
-* move.py- defines attributes that a move contains.
-* drag.py- Helps in implementing the drag functionallity of a piece.
+* display.py- It is responsible for all what is displayed on the screen.(showing pieces, showing board, showing moves on a piece touched)
+* board.py- probably the most important. All the chess rules are stored here, backend of what happens when a move is excecuted, also conversion of my chess board to FEN string is done here and also finding the best move.
+* square.py- Defines contents of a square, contents of a move, defines all pieces and is the backend for dragging functionallity in our game.
   ### Results:
+* Talking about openings played:
+Against E4 it plays lines similar to the Italian game (at depth= 1) and plays Caro Kann defence (at depth= 10). Against D4, it plays lines similar to Nimzo Indian defence (at depth= 1) and plays D5 lines(at depth= 10).
+
+  
   
