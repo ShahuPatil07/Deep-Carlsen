@@ -132,24 +132,22 @@ class Dragger:
         self.initial_row = 0
         self.initial_col = 0
 
-    # blit method
+    
 
     def update_blit(self, surface):
-        # texture
+       
         self.piece.set_texture(size=80)
         texture = self.piece.texture
-        # img
+       
         img = pygame.image.load(texture)
-        # rect
         img_center = (self.mouse_x, self.mouse_y)
         self.piece.texture_rect = img.get_rect(center=img_center)
-        # blit
         surface.blit(img, self.piece.texture_rect)
 
-    # other methods
+    
 
     def update_pos(self, pos):
-        self.mouse_x, self.mouse_y = pos # (xcor, ycor)
+        self.mouse_x, self.mouse_y = pos 
 
     def save_initial_pos(self, pos):
         self.initial_row = pos[1] // 100
@@ -165,3 +163,4 @@ class Dragger:
 
 
         
+
