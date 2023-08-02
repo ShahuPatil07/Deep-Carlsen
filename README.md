@@ -1,5 +1,5 @@
 # Deep-Carlsen
-In this project, I tried to make a chess engine which is able to compare moves and the best one at pretty good accuracy.
+In this project, I tried to make a chess engine which is able to compare moves and the find the best one with pretty good accuracy.
 Initially, I developed entire chess game using Pygame library. That itself included a lot of hardcoding. 
 ### Here are few problems that I faced during this:
 * In the dragging process, i needed to know whether piece is dragged at a square where its a valid move. For that i had to loop through all valid moves and compare them. But how to compare 2 moves as it was just an object under Move class. Solution was to compare initial and final squares of that move (this is a method in move.py). And for comparing squares, I had to define an equilizer method in Square.py where we check if row1= row2 and column1= column2 to verfy equality.
@@ -17,6 +17,6 @@ Initially, I developed entire chess game using Pygame library. That itself inclu
   ### Results:
 * Talking about openings played:
 Against E4 it plays lines similar to the Italian game (at depth= 1) and plays Caro Kann defence (at depth= 10). Against D4, it plays lines similar to Nimzo Indian defence (at depth= 1) and plays D5 lines(at depth= 10).
-
+* It does take some time to find the best move at higher depths. Tentative rating of this engine lies around 1800 at depth=10. 
   
   
