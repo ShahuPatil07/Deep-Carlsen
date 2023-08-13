@@ -19,4 +19,10 @@ Initially, I developed entire chess game using Pygame library. That itself inclu
 * move.py- defines attributes that a move contains.
 * drag.py- Helps in implementing the drag functionallity of a piece.
   ### Results:
+* Talking about openings played:
+Against E4 it plays lines similar to the Italian game (at depth= 1) and plays Caro Kann defence (at depth= 10). Against D4, it plays lines similar to Nimzo Indian defence (at depth= 1) and plays D5 lines(at depth= 10).
+* It does take some time to find the best move at higher depths. Tentative rating of this engine lies around 1800 on chess.com (at depth=10).
+* [Video demo](
+https://drive.google.com/drive/u/0/folders/1knGsoKpqMOF5RO6qvVb9Nh_fzYyqQ_B8)
+* To study more about this engine, have a look at its files in files branch. 
   
